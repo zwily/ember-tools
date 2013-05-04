@@ -28,7 +28,7 @@ function createIndex() {
     var walker = walk(dirPath);
     walker.on('file', function(dir, stats, next) {
       if (stats.name.charAt(0) !== '.') {
-        var path = unroot(dir + '/' + stats.name).replace(/\.js$/, '');
+        var path = unroot(dir + '/' + stats.name).replace(/\.(js|coffee)$/, '');
         if (dirName == 'helpers') {
           helpers.push({path: path});
         } else {
@@ -53,7 +53,7 @@ function createIndex() {
 
 function build() {
   var command = __dirname + '/../../node_modules/browserbuild/bin/browserbuild ' +
-                "-m index -b " + root + "/ `find "+ root + " -name '*.js'` > " +
+                "-m index -b " + root + "/ `find "+ root + " -name '*.js' -or -name '*.coffee'` > " +
                 rootify('application.js');
   exec(command, function (error, stdout, stderr) {
     message.fileCreated(rootify('application.js'));
